@@ -16,6 +16,7 @@
   */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "VS1053b.h"
 #include "mx_usart2.h"
 #include "stdio.h"
 #include "fat_sd_spi.h"
@@ -24,9 +25,11 @@
 #include "stm32c5xx_hal_uart.h"
 #include "sd.h"
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 sdcard_t card;
+vs1053b_handle_t player;
 uint8_t buffer[512];
 
 /* Serial Port */
@@ -48,6 +51,8 @@ int main(void)
     return (-1);
 
   SDCard(&card);
+  vs1053b_init(&player);
+  vs1053b_output(&player);
 
   // stream read test
   printf("ShadowAssasin.mp3 Reading...\n");
@@ -58,7 +63,7 @@ int main(void)
 
   while(eof==0) {
     f_read(&(card.file), buffer, 512, &(card.br));
-    //printf(buffer);
+    vs1053b_sdi_send_buffer(buffer, 512);
     if (card.br < 512)
       eof = 1;
   }

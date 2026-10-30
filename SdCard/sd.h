@@ -5,9 +5,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-typedef 
-
-struct {
+typedef struct {
     FATFS fs;
     FIL file;
     FRESULT result;

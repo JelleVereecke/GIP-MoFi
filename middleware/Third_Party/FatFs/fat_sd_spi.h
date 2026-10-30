@@ -25,17 +25,9 @@ typedef struct hwif hwif;
 
 extern hwif hw;
 
-
-enum sd_speed { SD_SPEED_INVALID, SD_SPEED_400KHZ, SD_SPEED_25MHZ };
-
-
-static void spi_set_speed(enum sd_speed speed);
-
-
 int hwif_init(hwif* hw);
 int sd_read(hwif* hw, uint32_t address, uint8_t *buf);
 int sd_write(hwif* hw, uint32_t address,const uint8_t *buf);
-
 
 #define sd_get_r3 sd_get_r7
 

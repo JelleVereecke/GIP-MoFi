@@ -6,31 +6,8 @@
 static void spi_init(void)
 {
 	/* Configure spi using CubeMX!!! */
-	spi_set_speed(SD_SPEED_400KHZ);
+	HAL_SPI_SetBaudRatePrescaler(mx_spi1_gethandle(), HAL_SPI_BAUD_RATE_PRESCALER_256);
 }
-
-static void spi_set_speed(enum sd_speed speed)
-{
-    // Use the raw base address pointer defined globally in your stm32 chip header
-    // By using the system macro SPI1, we completely bypass the unconfigured 'static hSPI1'
-    SPI_TypeDef *p_spi_hardware = SPI1; 
-
-    uint32_t prescaler = HAL_SPI_BAUD_RATE_PRESCALER_4; // Default high speed
-
-    if (speed == SD_SPEED_400KHZ) {
-        prescaler = HAL_SPI_BAUD_RATE_PRESCALER_256;    // Safe slow startup clock
-    }
-
-    // Call the Low-Layer function directly using the valid register map address
-    LL_SPI_SetBaudRatePrescaler(p_spi_hardware, prescaler);
-
-	HAL_Delay(5);
-
-    // 4. Tick extra dummy clocks at the new speed while CS is HIGH to flush out 
-    // any transitional glitch bits on the physical wires.
-    //sd_nec(); 
-}
-
 
 static uint8_t spi_txrx(uint8_t data) {
     uint8_t rx_data = 0xFF;
@@ -201,7 +178,7 @@ static int sd_init(hwif *hw)
 	hw->capabilities = 0;
 
 	/* start with 100-400 kHz clock */
-	spi_set_speed(SD_SPEED_400KHZ);
+	HAL_SPI_SetBaudRatePrescaler(mx_spi1_gethandle(), HAL_SPI_BAUD_RATE_PRESCALER_256);
 
 	printf("cmd0 - reset.. ");
 	spi_cs_high();
@@ -434,7 +411,7 @@ static int sd_init(hwif *hw)
 
 
 	/* now we can up the clock to <= 25 MHz */
-	spi_set_speed(SD_SPEED_25MHZ);
+	HAL_SPI_SetBaudRatePrescaler(mx_spi1_gethandle(), HAL_SPI_BAUD_RATE_PRESCALER_4);
 
 	return 0;
 
