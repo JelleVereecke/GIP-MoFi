@@ -64,14 +64,14 @@ extern "C" {
 
 
 /* Primary aliases for GPIO PB5 pin VSDCS */
-#define PB5_PORT                                        HAL_GPIOB
-#define PB5_PIN                                         HAL_GPIO_PIN_5
-#define PB5_INIT_STATE                                  HAL_GPIO_PIN_SET
-#define PB5_ACTIVE_STATE                                HAL_GPIO_PIN_SET
-#define PB5_INACTIVE_STATE                              HAL_GPIO_PIN_RESET
+#define PC1_PORT                                        HAL_GPIOC
+#define PC1_PIN                                         HAL_GPIO_PIN_1
+#define PC1_INIT_STATE                                  HAL_GPIO_PIN_SET
+#define PC1_ACTIVE_STATE                                HAL_GPIO_PIN_SET
+#define PC1_INACTIVE_STATE                              HAL_GPIO_PIN_RESET
 
 #define VSCS PB10_PORT, PB10_PIN
-#define VSDCS PB5_PORT, PB5_PIN
+#define VSDCS PC1_PORT, PC1_PIN
 #define VSRST PB4_PORT, PB4_PIN
 
 #define VSDREQ PC6_PORT, PC6_PIN

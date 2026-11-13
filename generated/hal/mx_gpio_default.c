@@ -32,6 +32,8 @@ system_status_t mx_gpio_default_init(void)
   hal_gpio_config_t  gpio_config;
 
   HAL_RCC_GPIOA_EnableClock();
+  HAL_RCC_GPIOB_EnableClock();
+  HAL_RCC_GPIOC_EnableClock();
 
   /*
     GPIO pin labels : SDCS
@@ -71,7 +73,6 @@ system_status_t mx_gpio_default_init(void)
   gpio_config.mode            = HAL_GPIO_MODE_INPUT;
   gpio_config.speed           = HAL_GPIO_SPEED_FREQ_LOW;
   gpio_config.pull            = HAL_GPIO_PULL_UP;
-  gpio_config.output_type     = HAL_GPIO_OUTPUT_PUSHPULL;
   gpio_config.init_state      = PC6_INIT_STATE;
   if (HAL_GPIO_Init(PC6_PORT, PC6_PIN, &gpio_config) != HAL_OK)
   {
@@ -102,8 +103,8 @@ system_status_t mx_gpio_default_init(void)
   gpio_config.speed           = HAL_GPIO_SPEED_FREQ_LOW;
   gpio_config.pull            = HAL_GPIO_PULL_UP;
   gpio_config.output_type     = HAL_GPIO_OUTPUT_PUSHPULL;
-  gpio_config.init_state      = PB5_INIT_STATE;
-  if (HAL_GPIO_Init(PB5_PORT, PB5_PIN, &gpio_config) != HAL_OK)
+  gpio_config.init_state      = PC1_INIT_STATE;
+  if (HAL_GPIO_Init(PC1_PORT, PC1_PIN, &gpio_config) != HAL_OK)
   {
     return SYSTEM_PERIPHERAL_ERROR;
   }
@@ -117,7 +118,7 @@ system_status_t mx_gpio_default_deinit(void)
   HAL_GPIO_DeInit(PB10_PORT, PB10_PIN);
   HAL_GPIO_DeInit(PC6_PORT, PC6_PIN);
   HAL_GPIO_DeInit(PB4_PORT, PB4_PIN);
-  HAL_GPIO_DeInit(PB5_PORT, PB5_PIN);
+  HAL_GPIO_DeInit(PC1_PORT, PC1_PIN);
 
   return SYSTEM_OK;
 }

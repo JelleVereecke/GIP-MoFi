@@ -33,14 +33,14 @@ hal_spi_handle_t *mx_spi1_init(void)
 {
   hal_spi_config_t spi_config;
 
-  if (HAL_SPI_Init(&hSPI1, HAL_SPI1) != HAL_OK)
+  HAL_RCC_SPI1_EnableClock();
+
+  if (HAL_RCC_SPI1_SetKernelClkSource(HAL_RCC_SPI1_CLK_SRC_PCLK2) != HAL_OK)
   {
     return NULL;
   }
 
-  HAL_RCC_SPI1_EnableClock();
-
-  if (HAL_RCC_SPI1_SetKernelClkSource(HAL_RCC_SPI1_CLK_SRC_PCLK2) != HAL_OK)
+  if (HAL_SPI_Init(&hSPI1, HAL_SPI1) != HAL_OK)
   {
     return NULL;
   }
@@ -50,7 +50,7 @@ hal_spi_handle_t *mx_spi1_init(void)
   spi_config.data_width = HAL_SPI_DATA_WIDTH_8_BIT;
   spi_config.clock_polarity = HAL_SPI_CLOCK_POLARITY_LOW;
   spi_config.clock_phase = HAL_SPI_CLOCK_PHASE_1_EDGE;
-  spi_config.baud_rate_prescaler = HAL_SPI_BAUD_RATE_PRESCALER_2;
+  spi_config.baud_rate_prescaler = HAL_SPI_BAUD_RATE_PRESCALER_4;
   spi_config.first_bit = HAL_SPI_MSB_FIRST;
   spi_config.nss_pin_management = HAL_SPI_NSS_PIN_MGMT_INTERNAL;
 

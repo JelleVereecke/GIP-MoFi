@@ -12,6 +12,10 @@ typedef struct vs1053b_handle_s {
     uint8_t endFillByte;
 } vs1053b_handle_t;
 
+// test, remove later
+void vs1053b_dump_regs(void);
+// end test
+
 void vs1053b_init(vs1053b_handle_t *handle);
 
 void vs1053b_soft_rst();
@@ -28,7 +32,7 @@ uint16_t vs1053b_read_reg(uint8_t reg);
 
 uint16_t vs1053b_wram_read(uint16_t addr);
 
-uint16_t vs1053b_wram_write(uint16_t addr, uint16_t data);
+void vs1053b_wram_write(uint16_t addr, uint16_t data);
 
 void sdi_send_fillers(vs1053b_handle_t *handle , size_t len);
 

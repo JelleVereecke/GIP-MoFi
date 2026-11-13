@@ -1,4 +1,4 @@
-/**
+/** main.c
   ******************************************************************************
   * file           : main.c
   * brief          : Main program body
@@ -20,6 +20,7 @@
 #include "mx_usart2.h"
 #include "stdio.h"
 #include "fat_sd_spi.h"
+#include "stm32c5xx_hal.h"
 #include "stm32c5xx_hal_spi.h"
 #include "mx_spi1.h"
 #include "stm32c5xx_hal_uart.h"
@@ -30,7 +31,7 @@
 
 sdcard_t card;
 vs1053b_handle_t player;
-uint8_t buffer[512];
+uint8_t buffer[32];
 
 /* Serial Port */
 int _write(int file, char *ptr, int len)
@@ -51,8 +52,11 @@ int main(void)
     return (-1);
 
   SDCard(&card);
+
+  HAL_Delay(1000);
   vs1053b_init(&player);
   vs1053b_output(&player);
+  HAL_Delay(1000);
 
   // stream read test
   printf("ShadowAssasin.mp3 Reading...\n");
@@ -61,12 +65,21 @@ int main(void)
 
   f_open(&(card.file), "songs/ShadowAssasin.mp3", FA_READ);
 
-  while(eof==0) {
-    f_read(&(card.file), buffer, 512, &(card.br));
-    vs1053b_sdi_send_buffer(buffer, 512);
-    if (card.br < 512)
-      eof = 1;
+  HAL_Delay(10);
+
+  while (f_read(&(card.file), buffer, sizeof(buffer), &(card.br)) == FR_OK && card.br > 0) {
+    vs1053b_sdi_send_buffer(buffer, card.br);
+    vs1053b_await_dreq();
   }
+
+  memset(&buffer, 0, sizeof(buffer));
+
+  for(int i = 0; i < 2080/sizeof(buffer); i++) {
+    vs1053b_sdi_send_buffer(buffer, card.br);
+    vs1053b_await_dreq();
+  }
+
+  HAL_Delay(10);
 
   f_close(&(card.file));
   printf("\nFile played; EOF\n");
